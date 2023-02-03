@@ -5,10 +5,19 @@ description = ""
 authors = ["ivansantiagojr <ivansantiago.junior@gmail.com>"]
 readme = "README.md"
 
+
+[tool.poetry.scripts]
+savit = "savit.main:app"
+
+
 [tool.poetry.dependencies]
 python = "^3.11"
 typer = {extras = ["all"], version = "^0.7.0"}
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
+isort = "^5.11.4"
 
 [build-system]
 requires = ["poetry-core"]
