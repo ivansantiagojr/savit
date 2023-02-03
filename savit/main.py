@@ -1,38 +1,21 @@
-import os
+import tomllib
 
 import typer
 
-app = typer.Typer()
+from savit.config import CONFIG_FILE, set_env
 
-
-HISTORY_PATH: str
+app = typer.Typer(help="Helping you to write docs by saving your commands")
 
 
 @app.command()
 def config():
     """
-    Saves the path of your shell history file
+    Saves your configurations to ~/.config/savit/config.toml 
     """
-    shell = os.getenv("SHELL")
-    home = os.getenv("HOME")
-    if shell.find("zsh") != -1:
-        HISTORY_PATH = f"{home}/.zhistory"
-
-    elif shell.find("bash") != -1:
-        HISTORY_PATH = f"{home}/.bash_history"
-
-    elif shell.find("fish") != -1:
-        HISTORY_PATH = f"{home}/.local/share/fish/fish_history"
-
-    print(HISTORY_PATH)
-    confirmation_prompt = input("is this your history file? [y/n]: ")
-    if confirmation_prompt == "y":
-        print("Config file saved")
-    else:
-        print("Please change the HISTORY_PATH variable in the config file")
-        HISTORY_PATH = input("Enter the path of your history file: ")
-
-    print(HISTORY_PATH)
+    if CONFIG_FILE.exists():
+        print("Config file already exists")
+        raise typer.Exit()
+    set_env()
 
 
 @app.command()
@@ -40,6 +23,10 @@ def start():
     """
     Start saving your commands
     """
+
+    if not CONFIG_FILE.exists():
+        set_env()
+
     saving = typer.style("saving", fg=typer.colors.GREEN)
     savit_stop = typer.style("savit stop", fg=typer.colors.BLUE)
     typer.echo(
@@ -52,21 +39,38 @@ def start():
 
 
 @app.command()
-def stop():
+def stop(
+    txt: bool = typer.Option(False, help="Saves your commands to a .txt file"),
+    md: bool = typer.Option(False, help="Saves your commands to a .txt file"),
+):
     """
     Stop saving your commands and writes them to a file
     """
-    with open(HISTORY_PATH, "r") as hist:
+    with CONFIG_FILE.open("rb") as f:
+        config_toml = tomllib.load(f)
+        hist_path = config_toml["savit"]["history_path"]
+
+    with open(hist_path, "r") as hist:
         hist_list = hist.readlines()
-        start_index = (
-            len(hist_list) - 1 - hist_list[::-1].index("python savit/main.py start\n")
-        )
+        start_index = len(hist_list) - 1 - hist_list[::-1].index("savit start\n")
         saved_commands = hist_list[start_index + 1 : -1]
-        with open("cmds/commands.md", "w") as commands:
-            for command in saved_commands:
-                commands.write(f"```sh\n{command}```\n\n")
-            print("Commands saved")
+
+    if txt:
+        output_format = "txt"
+    elif md:
+        output_format = "md"
+    else:
+        output_format = config_toml["savit"]["output_format"]
+
+    with open(f"./commands.{output_format}", "w") as commands:
+        for command in saved_commands:
+            commands.write(f"```sh\n{command}```\n\n")
+        print("Commands saved")
 
 
-if __name__ == "__main__":
-    app()
+@app.callback(invoke_without_command=True)
+def main():
+    """
+    Save your commands
+    """
+    ...
