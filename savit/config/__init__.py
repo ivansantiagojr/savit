@@ -6,8 +6,8 @@ import typer
 from click import Choice
 
 HISTORY_PATH = ""
-DOT_CONFIG_FILE = Path.home() / ".config" / "savit"
-CONFIG_FILE = DOT_CONFIG_FILE / "config.toml"
+DOT_CONFIG_FILE = Path(typer.get_app_dir("savit"))
+CONFIG_FILE: Path = Path(DOT_CONFIG_FILE) / "config.toml"
 
 
 def set_env():
@@ -58,8 +58,6 @@ history_path = "{home}/.local/share/fish/fish_history"
         print("Config file saved")
 
     else:
-        print("Please change the HISTORY_PATH variable in the config file")
-
         HISTORY_PATH = Path(input("Enter the path of your history file: "))
         config_toml_string = f"""[savit]
 history_path = {HISTORY_PATH}"""
@@ -71,6 +69,13 @@ history_path = {HISTORY_PATH}"""
     output_format = typer.prompt(
         "Choose an output format", type=Choice(["txt", "md"]), show_choices=True
     )
+    output_folder = input(
+        "Type the path to the folder where commands should be store (leave blank to save on current usage directory): "
+    )
 
     with CONFIG_FILE.open("a") as f:
-        f.write(f'output_format = "{output_format}"')
+        f.write(f'output_format = "{output_format}"\n')
+        if output_folder:
+            f.write(f'output_folder = "{output_folder}"\n')
+        else:
+            f.write('output_folder = "./"')
