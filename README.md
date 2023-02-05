@@ -66,3 +66,16 @@ $ savit stop [OPTIONS]
 * `--file PATH`: File (may include path) to save your commands
 * `--help`: Show this message and exit.
 
+
+**Points of attention**
+* Don't use aliases to savit commands, since savit works by reading your shell history, the app will work in an unexpected way if aliases are used;
+* Make sure to have your config file at `~/.config/savit/config.toml` correctly set up;
+
+
+**Config file structure**
+```toml
+[savit]
+history_path = "" # path to your shell history file
+output_format = "" # output format to use by deafault (txt or md)
+output_folder = "" # folder to save your commands by default (use ./ to save commands from the location where savit runs)
+```
