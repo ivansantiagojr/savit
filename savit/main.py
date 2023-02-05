@@ -1,4 +1,3 @@
-import os
 import tomllib
 from pathlib import Path
 from typing import Optional
@@ -86,8 +85,8 @@ def stop(
             else:
                 output_format = config_toml["savit"]["output_format"]
 
-            output_folder = config_toml["savit"]["output_path"]
-            output_file = os.path.join(output_folder, f"commands.{output_format}")
+            output_folder = config_toml["savit"]["output_folder"]
+            output_file = str(Path(output_folder) / f"commands.{output_format}")
         with open(output_file, "w") as commands:
             for command in saved_commands:
                 if output_format == "txt" or output_file.endswith(".txt"):

@@ -53,8 +53,9 @@ history_path = "{home}/.local/share/fish/fish_history"
 
     print(HISTORY_PATH)
 
-    confirmation_prompt = typer.confirm("is this your history file?", default=True)
-    if confirmation_prompt:
+    if confirmation_prompt := typer.confirm(
+        "is this your history file?", default=True
+    ):
         print("Config file saved")
 
     else:
