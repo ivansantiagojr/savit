@@ -68,16 +68,7 @@ def stop(
             saved_commands = hist_list[start_index + 1 : -1]
 
         output_format = config_toml["savit"]["output_format"]
-        if file is not None:
-            if txt or md:
-                typer.secho(
-                    "You can't use --txt or --md with --file. Use only one of them",
-                    fg=typer.colors.RED,
-                    err=True,
-                )
-                raise typer.Exit()
-            output_file = str(file)
-        else:
+        if file is None:
             if txt:
                 output_format = "txt"
             elif md:
@@ -87,6 +78,22 @@ def stop(
 
             output_folder = config_toml["savit"]["output_folder"]
             output_file = str(Path(output_folder) / f"commands.{output_format}")
+        elif txt or md:
+            typer.secho(
+                "You can't use --txt or --md with --file. Use only one of them",
+                fg=typer.colors.RED,
+                err=True,
+            )
+            raise typer.Exit()
+
+        elif not file.is_absolute():
+            output_folder = config_toml["savit"]["output_folder"]
+            output_file = str(Path(output_folder) / file)
+            print("não é absoluto")
+
+        else:
+            output_file = str(file)
+
         with open(output_file, "w") as commands:
             for command in saved_commands:
                 if output_format == "txt" or output_file.endswith(".txt"):
@@ -106,3 +113,6 @@ def main():
     Save your commands
     """
     ...
+
+if __name__ == "__main__":
+    app()
