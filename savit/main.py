@@ -92,7 +92,7 @@ def stop(
                 if output_format == "txt" or output_file.endswith(".txt"):
                     commands.write(f"{command}")
                 elif output_format == "md" or output_file.endswith(".md"):
-                    commands.write(f"```sh\n{command}```\n\n")
+                    commands.write(f"```console\n{command}```\n\n")
             print("Commands saved")
     except FileNotFoundError as e:
         typer.echo(f"File not found: {e}", err=True)
