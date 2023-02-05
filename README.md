@@ -16,9 +16,9 @@ $ savit [OPTIONS] COMMAND [ARGS]...
 
 **Commands**:
 
-* `config`: Saves your configurations to...
+* `config`: Saves your configurations to ~/.config/savit/config.toml
 * `start`: Start saving your commands
-* `stop`: Stop saving your commands and writes them to...
+* `stop`: Stop saving your commands and writes them to a file
 
 ## `savit config`
 
