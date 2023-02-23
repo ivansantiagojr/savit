@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "savit"
-version = "0.1.1"
+version = "0.1.2"
 description = "Saves your commands as you use them"
 authors = ["ivansantiagojr <ivansantiago.junior@gmail.com>"]
 readme = "README.md"
@@ -18,6 +18,8 @@ typer = {extras = ["all"], version = "^0.7.0"}
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
 isort = "^5.11.4"
+mypy = "^1.0.1"
+pytest = "^7.2.1"
 
 [build-system]
 requires = ["poetry-core"]
