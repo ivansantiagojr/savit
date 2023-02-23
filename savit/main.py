@@ -12,7 +12,7 @@ app = typer.Typer(help="Helping you to write docs by saving your commands")
 @app.command()
 def config(
     open_file: bool = typer.Option(False, "--open-file", help="Opens the config file")
-):
+) -> None:
     """
     Saves your configurations to ~/.config/savit/config.toml
     """
@@ -27,7 +27,7 @@ def config(
 
 
 @app.command()
-def start():
+def start() -> None:
     """
     Start saving your commands
     """
@@ -53,7 +53,7 @@ def stop(
     file: Optional[Path] = typer.Option(
         None, help="File (may include path) to save your commands"
     ),
-):
+) -> None:
     """
     Stop saving your commands and writes them to a file
     """
@@ -89,7 +89,6 @@ def stop(
         elif not file.is_absolute():
             output_folder = config_toml["savit"]["output_folder"]
             output_file = str(Path(output_folder) / file)
-            print("não é absoluto")
 
         else:
             output_file = str(file)
@@ -108,11 +107,12 @@ def stop(
 
 
 @app.callback()
-def main():
+def main() -> None:
     """
     Save your commands
     """
     ...
+
 
 if __name__ == "__main__":
     app()
