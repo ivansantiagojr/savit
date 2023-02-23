@@ -18,6 +18,8 @@ typer = {extras = ["all"], version = "^0.7.0"}
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
 isort = "^5.11.4"
+mypy = "^1.0.1"
+pytest = "^7.2.1"
 
 [build-system]
 requires = ["poetry-core"]
