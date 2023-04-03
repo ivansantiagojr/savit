@@ -1,5 +1,5 @@
-import tomllib
 from pathlib import Path
+import tomllib
 from typing import Optional
 
 import typer
@@ -11,7 +11,8 @@ app = typer.Typer(help="Helping you to write docs by saving your commands")
 
 @app.command()
 def config(
-    open_file: bool = typer.Option(False, "--open-file", help="Opens the config file")
+    open_file: bool = typer.Option(
+        False, "--open-file", help="Opens the config file")
 ) -> None:
     """
     Saves your configurations to ~/.config/savit/config.toml
@@ -48,8 +49,10 @@ def start() -> None:
 
 @app.command()
 def stop(
-    txt: bool = typer.Option(False, "--txt", help="Saves your commands to a .txt file"),
-    md: bool = typer.Option(False, "--md", help="Saves your commands to a .md file"),
+    txt: bool = typer.Option(
+        False, "--txt", help="Saves your commands to a .txt file"),
+    md: bool = typer.Option(
+        False, "--md", help="Saves your commands to a .md file"),
     file: Optional[Path] = typer.Option(
         None, help="File (may include path) to save your commands"
     ),
@@ -62,10 +65,16 @@ def stop(
             config_toml = tomllib.load(f)
             hist_path = config_toml["savit"]["history_path"]
 
-        with open(hist_path, "r") as hist:
-            hist_list = hist.readlines()
-            start_index = len(hist_list) - 1 - hist_list[::-1].index("savit start\n")
-            saved_commands = hist_list[start_index + 1 : -1]
+        with open(hist_path, "rb") as hist:
+            history_shell = hist.readlines()
+            hist_list = []
+            for i in range(len(history_shell)):
+                hist_list.append(history_shell[i].decode('utf-8'))
+
+            print(hist_list)
+            start_index = len(hist_list) - 1 - \
+                hist_list[::-1].index("savit start\n")
+            saved_commands = hist_list[start_index + 1: -1]
 
         output_format = config_toml["savit"]["output_format"]
         if file is None:
@@ -77,7 +86,8 @@ def stop(
                 output_format = config_toml["savit"]["output_format"]
 
             output_folder = config_toml["savit"]["output_folder"]
-            output_file = str(Path(output_folder) / f"commands.{output_format}")
+            output_file = str(Path(output_folder) /
+                              f"commands.{output_format}")
         elif txt or md:
             typer.secho(
                 "You can't use --txt or --md with --file. Use only one of them",
