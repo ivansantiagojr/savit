@@ -1,0 +1,7 @@
+site_name: savit
+repo_url: https://github.com/ivansantiagojr/savit
+repo_name: ivansantiagojr/savit
+edit_uri: tree/main/docs
+
+theme:
+  name: material
