@@ -103,7 +103,7 @@ def stop(
             output_folder = config_toml['savit']['output_folder']
             output_file = str(Path(output_folder) / file)
 
-        else:
+        elif file.is_absolute():
             output_file = str(file)
 
         with open(output_file, 'w') as commands:
@@ -125,7 +125,3 @@ def main() -> None:
     Save your commands
     """
     ...
-
-
-if __name__ == '__main__':
-    app()
