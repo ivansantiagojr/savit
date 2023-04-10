@@ -1,13 +1,13 @@
 import os
-import tomllib
 from pathlib import Path
+from typing import Final
 
 import typer
 from click import Choice
 
 HISTORY_PATH = ""
-DOT_CONFIG_FILE = Path(typer.get_app_dir("savit"))
-CONFIG_FILE: Path = Path(DOT_CONFIG_FILE) / "config.toml"
+DOT_CONFIG_FILE: Final[Path] = Path(typer.get_app_dir("savit"))
+CONFIG_FILE: Final[Path] = Path(DOT_CONFIG_FILE) / "config.toml"
 
 
 def _get_shell_history(home: Path, config_file_name: str) -> str:
