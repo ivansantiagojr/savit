@@ -21,4 +21,4 @@ jobs:
         run: poetry install --without doc
 
       - name: Run tests
-        run: poetry run task tests
+        run: poetry run task test
