@@ -1,0 +1,24 @@
+name: Pipeline
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Copy the repo files
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.1'
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: install dependencies
+        run: poetry install --without doc
+
+      - name: Run tests
+        run: poetry run task tests
