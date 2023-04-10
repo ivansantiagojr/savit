@@ -28,7 +28,8 @@ def set_env() -> None:
         HISTORY_PATH = _get_shell_history(
             home, '/.local/share/fish/fish_history'
         )
-
+    else:
+        HISTORY_PATH = ''
     print(HISTORY_PATH)
 
     if confirmation_prompt := typer.confirm(
